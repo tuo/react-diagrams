@@ -4,6 +4,7 @@ import { DefaultNodeModel } from "../models/DefaultNodeModel";
 import { DefaultPortLabel } from "./DefaultPortLabelWidget";
 import { DiagramEngine } from "../../DiagramEngine";
 import { BaseWidget, BaseWidgetProps } from "../../widgets/BaseWidget";
+import { Step } from "../../Step";
 
 export interface DefaultNodeProps extends BaseWidgetProps {
 	node: DefaultNodeModel;
@@ -25,6 +26,15 @@ export class DefaultNodeWidget extends BaseWidget<DefaultNodeProps, DefaultNodeS
 		return <DefaultPortLabel model={port} key={port.id} />;
 	}
 
+	generateBody(stepText) {
+		return <p key={stepText}>{stepText}</p>;
+	}
+
+	// generatePortStep(action) {
+	// 	return <DefaultPortLabel model={action} key={action.text} />;
+	// }
+
+
 	render() {
 		return (
 			<div {...this.getProps()} style={{ background: this.props.node.color }}>
@@ -34,11 +44,16 @@ export class DefaultNodeWidget extends BaseWidget<DefaultNodeProps, DefaultNodeS
 						{_.map(this.props.node.getInPorts(), this.generatePort.bind(this))}
 					</div>
 				</div>
+				<div className={this.bem("__body")}>
+
+					<div className={this.bem("__texts")}>
+						{_.map(this.props.node.getStep() && this.props.node.getStep().texts, this.generateBody.bind(this))}
+					</div>
+				</div>
 				<div className={this.bem("__ports")}>
-
-
 					<div className={this.bem("__out")}>
 						{_.map(this.props.node.getOutPorts(), this.generatePort.bind(this))}
+						
 					</div>
 				</div>
 			</div>

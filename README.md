@@ -20,7 +20,17 @@ Example implementation using custom models:
 Get started with the default models right out of the box:
 ![](./images/example3.jpg)
 
-
+// {
+//    "id": 1,
+//    "name": "Welcome",
+// 	 "texts": ["test", "test2"],
+//    "type": "Options",
+//   "actions": [
+//     {
+//       "text": "yes", "nextStepId": 2
+//     }
+//   ]
+// }
 ## Introduction
 
 A no-nonsense diagramming library written entirely in React with the help of a few small libraries. It aims to be:
@@ -30,7 +40,7 @@ A no-nonsense diagramming library written entirely in React with the help of a f
 * Simple to operate and understand without sugar and magic
 * Fast and optimized to handle large diagrams with hundreds of nodes/links
 * Super easy to use, and should work as you expect it to
-* Perfect for creating declarative systems such as programmatic pipelines and visual programming languages 
+* Perfect for creating declarative systems such as programmatic pipelines and visual programming languages
 
 #### Run the demos
 
@@ -42,6 +52,3 @@ Simply run `webpack` in the root directory \(or `export NODE_ENV=production && w
 We use webpack for this because TSC cannot compile a single UMD file \(TSC can currently only output multiple UMD files\).
 
 ## [Checkout the docs](https://projectstorm.gitbooks.io/react-diagrams)
-
-
-

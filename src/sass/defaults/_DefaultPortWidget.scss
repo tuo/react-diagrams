@@ -20,5 +20,17 @@
       justify-content: flex-end;
       text-align: right;
     }
+
+    position: relative;
+    padding: 5px 18px;
+    .srd-port {
+      background: purple;
+      border-radius: 17px;
+      position: absolute;
+      right: -8px;
+      top: 3px;
+    }
+
+    
   }
 }

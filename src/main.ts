@@ -51,3 +51,5 @@ export * from "./widgets/BaseWidget";
 
 export * from "./widgets/layers/LinkLayerWidget";
 export * from "./widgets/layers/NodeLayerWidget";
+
+export * from "./Step";
