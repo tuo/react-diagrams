@@ -22,11 +22,11 @@ export class DefaultPortLabel extends BaseWidget<DefaultPortLabelProps, DefaultP
 	}
 
 	render() {
-		var port = <PortWidget node={this.props.model.getParent()} name={this.props.model.name} />;
+		var port = <div><PortWidget node={this.props.model.getParent()} name={this.props.model.name} /></div>;
 		var label = <div className="name">{this.props.model.label}</div>;
-
+		var borderClz = this.props.model.in ? "1px solid red": "1px solid purple"
 		return (
-			<div {...this.getProps()}>
+			<div {...this.getProps()} style={{"border": borderClz}}>
 				{this.props.model.in ? port : label}
 				{this.props.model.in ? label : port}
 			</div>

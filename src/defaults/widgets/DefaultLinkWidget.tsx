@@ -76,11 +76,12 @@ export class DefaultLinkWidget extends BaseWidget<DefaultLinkProps, DefaultLinkS
 			!this.props.diagramEngine.isModelLocked(this.props.link) &&
 			this.props.link.points.length - 1 <= this.props.diagramEngine.getMaxNumberPointsPerLink()
 		) {
+			console.log(`addPointToLink: ${index}`)
 			const point = new PointModel(this.props.link, this.props.diagramEngine.getRelativeMousePoint(event));
-			point.setSelected(true);
-			this.forceUpdate();
-			this.props.link.addPoint(point, index);
-			this.props.pointAdded(point, event);
+			// point.setSelected(true);
+			// this.forceUpdate();
+			// this.props.link.addPoint(point, index);
+			// this.props.pointAdded(point, event);
 		}
 	};
 
