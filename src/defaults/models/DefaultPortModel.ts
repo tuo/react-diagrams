@@ -36,9 +36,14 @@ export class DefaultPortModel extends PortModel {
 	}
 
 	canLinkToPort(port: PortModel): boolean {
+
 		if (port instanceof DefaultPortModel) {
+
+			console.log(`canLinkToPort ${port.in}, and this: ${this.in}`)
+
 			return this.in !== port.in;
 		}
+
 		return true;
 	}
 

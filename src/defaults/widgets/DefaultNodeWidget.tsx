@@ -29,7 +29,7 @@ export class DefaultNodeWidget extends BaseWidget<DefaultNodeProps, DefaultNodeS
 		return (
 			<div {...this.getProps()} style={{ background: this.props.node.color }}>
 				<div className={this.bem("__title")}>
-					<div className={this.bem("__name")}>{this.props.node.name}</div>
+					<div className={this.bem("__name")}>NODEID {this.props.node.id}</div>
 				</div>
 				<div className={this.bem("__ports")}>
 					<div className={this.bem("__in")}>

@@ -73,8 +73,10 @@ export class PortModel extends BaseModel<NodeModel, BaseModelListener> {
 	}
 
 	public createLinkModel(): LinkModel | null {
+		var numberOfLinks: number = _.size(this.links);
+		//console.log(`(this.maximumLinks: ${this.maximumLinks} and numberOfLinks: ${numberOfLinks}`);
 		if (_.isFinite(this.maximumLinks)) {
-			var numberOfLinks: number = _.size(this.links);
+
 			if (this.maximumLinks === 1 && numberOfLinks >= 1) {
 				return _.values(this.links)[0];
 			} else if (numberOfLinks >= this.maximumLinks) {

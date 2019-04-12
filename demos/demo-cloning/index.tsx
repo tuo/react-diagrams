@@ -68,6 +68,7 @@ export default () => {
 	var node1 = new DefaultNodeModel("Node 1", "rgb(0,192,255)");
 	let port = node1.addOutPort("Out");
 	node1.setPosition(100, 100);
+	//port.maximumLinks = 1;
 
 	//3-B) create another default node
 	var node2 = new DefaultNodeModel("Node 2", "rgb(192,255,0)");
@@ -77,12 +78,17 @@ export default () => {
 	// link the ports
 	let link1 = port.link(port2);
 
+	var node3 = new DefaultNodeModel("Node 3", "rgb(192,215,0)");
+	let port3 = node3.addInPort("In");
+	node3.setPosition(400, 200);
+
+
 	//4) add the models to the root graph
-	model.addAll(node1, node2, link1);
+	model.addAll(node1, node2, link1, node3);
 
 	//5) load model into engine
 	engine.setDiagramModel(model);
 
 	//6) render the diagram!
-	return <CloneSelected engine={engine} model={model} />;
+	return <CloneSelected engine={engine} model={model}  allowLooseLinks={true}/>;
 };

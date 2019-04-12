@@ -112,6 +112,12 @@ export class DiagramWidget extends BaseWidget<DiagramProps, DiagramState> {
 	}
 
 	componentDidMount() {
+
+		var diagramEngine = this.props.diagramEngine;
+		var diagramModel = diagramEngine.getDiagramModel();
+
+		console.log(diagramEngine.getDiagramModel(), 'componentDidMount');
+
 		this.onKeyUpPointer = this.onKeyUp.bind(this);
 
 		//add a keyboard listener
@@ -210,6 +216,9 @@ export class DiagramWidget extends BaseWidget<DiagramProps, DiagramState> {
 	onMouseMove(event) {
 		var diagramEngine = this.props.diagramEngine;
 		var diagramModel = diagramEngine.getDiagramModel();
+
+		console.log(diagramEngine.getDiagramModel(), 'onMouseMove');
+
 		//select items so draw a bounding box
 		if (this.state.action instanceof SelectingAction) {
 			var relative = diagramEngine.getRelativePoint(event.clientX, event.clientY);
@@ -315,6 +324,30 @@ export class DiagramWidget extends BaseWidget<DiagramProps, DiagramState> {
 		//are we going to connect a link to something?
 		if (this.state.action instanceof MoveItemsAction) {
 			var element = this.getMouseElement(event);
+			//remove any invalid links
+			//save a map of array sourceId to targetId (Node) map, if any
+			var sourceIdToTargetIdMap = {};
+			_.forEach(this.state.action.selectionModels, model => {
+				//only care about points connecting to things
+				if (!(model.model instanceof PointModel)) {
+					return;
+				}
+				//console.log('selectionModels', model);
+
+				let link: LinkModel = model.model.getLink();
+				let sourcePort: PortModel = link.getSourcePort();
+				let targetPort: PortModel = link.getTargetPort();
+
+
+				//console.log('sourcePort', sourcePort && sourcePort.getNode() && (sourcePort.getNode()).getID());
+				//console.log('targetPort', targetPort && targetPort.getNode() && (targetPort.getNode()).getID());
+				if(sourcePort != null && sourcePort.getNode() != null && targetPort != null && targetPort.getNode() != null){
+					let sourceId = sourcePort && (sourcePort.getNode()).getID();
+					let targetId = targetPort && (targetPort.getNode()).getID();
+					sourceIdToTargetIdMap[sourceId] = targetId
+				}
+			});
+			console.log(diagramEngine.getDiagramModel(), 'sourceIdToTargetIdMap', sourceIdToTargetIdMap);
 			_.forEach(this.state.action.selectionModels, model => {
 				//only care about points connecting to things
 				if (!(model.model instanceof PointModel)) {
@@ -348,7 +381,8 @@ export class DiagramWidget extends BaseWidget<DiagramProps, DiagramState> {
 			});
 
 			//check for / remove any loose links in any models which have been moved
-			if (!this.props.allowLooseLinks && this.state.wasMoved) {
+			//remove that 
+			if (this.state.wasMoved) {
 				_.forEach(this.state.action.selectionModels, model => {
 					//only care about points connecting to things
 					if (!(model.model instanceof PointModel)) {
@@ -369,10 +403,16 @@ export class DiagramWidget extends BaseWidget<DiagramProps, DiagramState> {
 				if (!(model.model instanceof PointModel)) {
 					return;
 				}
+				console.log('selectionModels', model);
 
 				let link: LinkModel = model.model.getLink();
 				let sourcePort: PortModel = link.getSourcePort();
 				let targetPort: PortModel = link.getTargetPort();
+
+				console.log('sourcePort', sourcePort && (sourcePort.getNode()).getID());
+				console.log('targetPort', targetPort && (targetPort.getNode()).getID());
+
+
 				if (sourcePort !== null && targetPort !== null) {
 					if (!sourcePort.canLinkToPort(targetPort)) {
 						//link not allowed
@@ -387,6 +427,8 @@ export class DiagramWidget extends BaseWidget<DiagramProps, DiagramState> {
 						//link is a duplicate
 						link.remove();
 					}
+					//if source == source but target not equal current target, means new link connected, then we clear old ones
+
 				}
 			});
 
