@@ -49,11 +49,17 @@ export class DefaultNodeWidget extends BaseWidget<DefaultNodeProps, DefaultNodeS
 					<div className={this.bem("__texts")}>
 						{_.map(this.props.node.getStep() && this.props.node.getStep().texts, this.generateBody.bind(this))}
 					</div>
+					{
+						this.props.node.getStep() &&  <img  style={{ "width": "100px"}}
+						 src="https://images.pexels.com/photos/20787/pexels-photo.jpg?auto=compress&cs=tinysrgb&h=350"
+						 alt="new"
+						 />
+					}
 				</div>
 				<div className={this.bem("__ports")}>
 					<div className={this.bem("__out")}>
 						{_.map(this.props.node.getOutPorts(), this.generatePort.bind(this))}
-						
+
 					</div>
 				</div>
 			</div>
