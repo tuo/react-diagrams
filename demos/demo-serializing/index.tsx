@@ -24,6 +24,19 @@ export default () => {
 		]
 	}
 
+
+		const step2: Step = {
+			id: 2,
+			name: "Test",
+			isEntry: false,
+			type: 'Options',
+			texts: ['欢迎来到'],
+			actions: [
+				{ text: "yes", nextStepId: 2},
+				{ text: "no", nextStepId: -1},
+			]
+		}
+
 	// const step1: Step = {
 	// 	id: 2,
 	// 	name: "Hello 2",
@@ -50,7 +63,7 @@ export default () => {
 	// link the ports
 	let link1 = portYes.link(port2);
 
-	var node3 = new DefaultNodeModel("Node 3", "rgb(192,215,0)");
+	var node3 = new DefaultNodeModel("Node 3", "rgb(192,215,0)", [], step2);
 	let port3 = node3.addInPort("In");
 	node3.setPosition(400, 200);
 
