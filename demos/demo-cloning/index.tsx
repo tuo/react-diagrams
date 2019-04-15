@@ -67,15 +67,7 @@ export default () => {
 
 	//3-A) create a default node
 
-	const step1: Step = {
-		id: 1,
-    name: "Hello",
-    isEntry: true,
-		type: 'Options',
-		texts: ['Welcome bro', 'Ni hao']
-	}
-
-	var node1 = new DefaultNodeModel("Node 1", "rgb(0,192,255)", ['yes', 'no'], step1);
+	var node1 = new DefaultNodeModel("Node 1", "rgb(0,192,255)", ['yes', 'no']);
 	let port = node1.addOutPort("Out");
 	node1.setPosition(100, 100);
 	//port.maximumLinks = 1;

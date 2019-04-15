@@ -60,6 +60,12 @@ export class DefaultNodeModel extends NodeModel {
 		});
 	}
 
+	getInPort(): DefaultPortModel {
+		return _.find(this.ports, portModel => {
+			return portModel.in;
+		});
+	}
+
 	getOutPorts(): DefaultPortModel[] {
 		return _.filter(this.ports, portModel => {
 			return !portModel.in;

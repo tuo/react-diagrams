@@ -59,7 +59,6 @@ export class DefaultNodeWidget extends BaseWidget<DefaultNodeProps, DefaultNodeS
 				<div className={this.bem("__ports")}>
 					<div className={this.bem("__out")}>
 						{_.map(this.props.node.getOutPorts(), this.generatePort.bind(this))}
-
 					</div>
 				</div>
 			</div>

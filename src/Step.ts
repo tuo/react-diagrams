@@ -5,9 +5,9 @@ export interface Step {
   isEntry: boolean;
   texts?: (string)[] | null;
   type: string;
-  actions?: (StepAction)[] | null;
+  actions: any;
 }
-export interface StepAction {
-  text: string;
-  nextStepId: number;
-}
+// export interface StepAction {
+//   text: string;
+//   nextStepId: number;
+// }
