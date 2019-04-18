@@ -6,8 +6,119 @@ import { action } from "@storybook/addon-actions";
 import * as beautify from "json-beautify";
 import * as _ from "lodash";
 
-const allStepsJson = {"list":{"count":6,"rows":[{"id":7,"name":"location","type":"Options","texts":["欢迎","你好"],"actions":[{"text":"yes","nextStepId":3},{"text":"no"}],"isEntry":true,"createdAt":"2019-04-09T04:29:07.768Z","updatedAt":"2019-04-09T04:29:07.768Z"},{"id":1,"name":"address","type":"Input","texts":["输入地址"],"actions":{},"isEntry":false,"createdAt":"2019-04-05T13:39:50.261Z","updatedAt":"2019-04-15T10:17:38.474Z"},{"id":4,"name":"test","type":"Options","texts":["121221"],"actions":[{"text":"yes","nextStepId":1},{"text":"no"}],"isEntry":null,"createdAt":"2019-04-05T11:00:32.862Z","updatedAt":"2019-04-05T11:00:32.862Z"},{"id":3,"name":"weather","type":"Options","texts":["天气咋样","冷不冷","实话"],"actions":["冷","好冷","热"],"isEntry":null,"createdAt":"2019-04-05T10:51:12.334Z","updatedAt":"2019-04-05T10:51:12.334Z"},{"id":2,"name":"usage","type":"Options","texts":["你干啥的","ganma "],"actions":["yes","no"],"isEntry":null,"createdAt":"2019-04-05T10:50:25.231Z","updatedAt":"2019-04-05T10:50:25.231Z"},{"id":6,"name":"thanks","type":"None","texts":["Thanks for the inquiry"],"actions":null,"isEntry":null,"createdAt":"2019-04-05T10:39:48.154Z","updatedAt":"2019-04-05T10:39:48.154Z"}]}}
-
+const allStepsJson = {
+  "list" : {
+    "count" : 6,
+    "rows" : [
+      {
+        "updatedAt" : "2019-04-09T04:29:07.768Z",
+        "id" : 7,
+        "texts" : [
+          "欢迎",
+          "你好"
+        ],
+        "isEntry" : true,
+        "type" : "Options",
+        "createdAt" : "2019-04-09T04:29:07.768Z",
+        "name" : "location",
+        "actions" : [
+          {
+            "nextStepId" : 3,
+            "text" : "茶"
+          },
+          {
+            "text" : "咖啡"
+          },
+					{
+            "text" : "牛奶"
+          },
+					{
+            "text" : "矿泉水"
+          },
+        ]
+      },
+      {
+        "updatedAt" : "2019-04-15T10:17:38.474Z",
+        "id" : 1,
+        "texts" : [
+          "输入地址"
+        ],
+        "isEntry" : false,
+        "type" : "Input",
+        "createdAt" : "2019-04-05T13:39:50.261Z",
+        "name" : "address",
+        "actions" : {}
+      },
+      {
+        "updatedAt" : "2019-04-05T11:00:32.862Z",
+        "id" : 4,
+        "texts" : [
+          "121221"
+        ],
+        "isEntry" : null,
+        "type" : "Options",
+        "createdAt" : "2019-04-05T11:00:32.862Z",
+        "name" : "test",
+        "actions" : [
+          {
+            "nextStepId" : 1,
+            "text" : "yes"
+          },
+          {
+            "text" : "no"
+          }
+        ]
+      },
+      {
+        "updatedAt" : "2019-04-05T10:51:12.334Z",
+        "id" : 3,
+        "texts" : [
+          "天气咋样",
+          "冷不冷",
+          "实话"
+        ],
+        "isEntry" : null,
+        "type" : "Options",
+        "createdAt" : "2019-04-05T10:51:12.334Z",
+        "name" : "weather",
+        "actions" : {}
+      },
+      {
+        "updatedAt" : "2019-04-05T10:50:25.231Z",
+        "id" : 2,
+        "texts" : [
+          "你干啥的",
+          "ganma "
+        ],
+        "isEntry" : null,
+        "type" : "Options",
+        "createdAt" : "2019-04-05T10:50:25.231Z",
+        "name" : "usage",
+        "actions" : [
+            {
+            "nextStepId" : 2,
+            "text" : "搬砖"
+          },
+          {
+            "text" : "码农"
+          }
+        ]
+      },
+      {
+        "updatedAt" : "2019-04-05T10:39:48.154Z",
+        "id" : 6,
+        "texts" : [
+          "Thanks for the inquiry"
+        ],
+        "isEntry" : null,
+        "type" : "None",
+        "createdAt" : "2019-04-05T10:39:48.154Z",
+        "name" : "thanks",
+        "actions" : null
+      }
+    ]
+  }
+}
 
 const allStepsData = allStepsJson.list.rows;
 
@@ -60,19 +171,28 @@ export default () => {
 	const nodes = [];
 	const stepIdToNode = {}
 	allStepsData.forEach((step, index) => {
-		console.log("index", index);
+		console.log("index", index, step.actions);
 		var node = new DefaultNodeModel("Node 1", "rgb(0,192,255)", ['yes', 'no'], step);
 		//if is entry ignore the in port
-		// if(!step.isEntry){
-		// 	//add input
-		// 	node.addInPort("In");
-		// 	//node3.setPosition(400, 200);
-		// }
+		if(!step.isEntry){
+			//add input
+			node.addInPort("In");
+		}
+
+		//console.log(typeof step.actions)
+		const { actions } = step;
+		if(_.isArray(actions)){
+			  actions.forEach((action, index) => {
+						node.addOutPort(action.text);
+				});
+		}else if(actions){
+				node.addOutPort(step.type);
+		}
 		// let portYes = node1.addOutPort("yes");
 		// let portNo = node1.addOutPort("no");
 		// let portNotSUre = node1.addOutPort("not sure");
 		// node1.setPosition(100, 100);
-		node.setPosition(Math.random() * 100, Math.random() * 500);
+		node.setPosition(Math.random() * 500, Math.random() * 500);
 		nodes.push(node);
 		stepIdToNode[step.id] = node;
 		model.addNode(node);
