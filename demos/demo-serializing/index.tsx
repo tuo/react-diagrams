@@ -47,7 +47,7 @@ const allStepsJson = {
         "type" : "Input",
         "createdAt" : "2019-04-05T13:39:50.261Z",
         "name" : "address",
-        "actions" : {}
+        "actions" : []
       },
       {
         "updatedAt" : "2019-04-05T11:00:32.862Z",
@@ -81,7 +81,7 @@ const allStepsJson = {
         "type" : "Options",
         "createdAt" : "2019-04-05T10:51:12.334Z",
         "name" : "weather",
-        "actions" : {}
+        "actions" : []
       },
       {
         "updatedAt" : "2019-04-05T10:50:25.231Z",
@@ -114,7 +114,7 @@ const allStepsJson = {
         "type" : "None",
         "createdAt" : "2019-04-05T10:39:48.154Z",
         "name" : "thanks",
-        "actions" : null
+        "actions" : [{"nextStepId" : 2}]
       }
     ]
   }
