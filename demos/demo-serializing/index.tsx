@@ -27,13 +27,15 @@ const allStepsJson = {
             "text" : "茶"
           },
           {
-            "text" : "咖啡"
+            "text" : "咖啡",
+            "nextStepId" : 1,
           },
 					{
             "text" : "牛奶"
           },
 					{
-            "text" : "矿泉水"
+            "text" : "矿泉水",
+            "nextStepId" : 4,
           },
         ]
       },
@@ -47,7 +49,9 @@ const allStepsJson = {
         "type" : "Input",
         "createdAt" : "2019-04-05T13:39:50.261Z",
         "name" : "address",
-        "actions" : []
+        "actions" : [
+          {nextStepId : 6, text: ""},
+        ]
       },
       {
         "updatedAt" : "2019-04-05T11:00:32.862Z",
@@ -81,7 +85,9 @@ const allStepsJson = {
         "type" : "Options",
         "createdAt" : "2019-04-05T10:51:12.334Z",
         "name" : "weather",
-        "actions" : []
+        "actions" : [
+
+        ]
       },
       {
         "updatedAt" : "2019-04-05T10:50:25.231Z",
@@ -115,7 +121,7 @@ const allStepsJson = {
         "createdAt" : "2019-04-05T10:39:48.154Z",
         "name" : "thanks",
         "actions" : [
-          {nextStepId : 2, text: ""},
+
         ]
       }
     ]
@@ -125,38 +131,41 @@ const allStepsJson = {
 const allStepsData = allStepsJson.list.rows;
 
 
-let breadthFirstLinksBuild = (step, s) => {
-	//if(step.is)
-	//1. create node
-	var node = new DefaultNodeModel("Node 1", "rgb(0,192,255)", ['yes', 'no'], step);
-	//if is entry ignore the in port
-	let inPort = null;
-	if(!step.isEntry){
-		//add input
-		inPort = node.addInPort("In");
-	}
+let breadthFirstLinksBuild = (stepIdToNode, nodesArr, model) => {
 
+  let nextNodesArr: DefaultNodeModel[] = [];
+  let stepIds: string[] = [];
+  console.log("loop nodes", nodesArr);
+  nodesArr.forEach((rootNode, index) => {
+    const step = rootNode.getStep();
+    step.actions.forEach((action, index) => {
+        //node.addOutPort(action.text);
 
-	//check its
+        const nextStepId = action.nextStepId;
+        const portOut = rootNode.getOutPortByStepId(nextStepId);
+        const nextNode = stepIdToNode[nextStepId];
+        if(nextNode){
+          const portIn = nextNode.getInPort();
+          console.log(`portOut: ${portOut}, portIn: ${portIn}`);
+          if(portOut && portIn){
 
-
-	//if(step.)
-  //   let vs = vertices.map((v, i) => {
-  //   	return Object.assign( {}, v, {color: 'white', distance: Infinity, parent: null, id: `edge ${i}`});
-  //   });
-  //   Object.assign(vs[s], {color: 'grey', distance: 0});
-	//
-  //   let Q = [s];
-  //   while (Q.length) {
-	// let v = vs[Q.shift()];
-	// const d = v.distance+1;
-	// v.edges.filter(e => vs[e].color === 'white').forEach(e => {
-	//     Object.assign(vs[e], { color: 'grey', distance: d, parent: v.id});
-	//     Q.push(e);
-  //       });
-  //       v.color = 'black';
-  //   }
-  //   return vs;
+              let link1 = portOut.link(portIn);
+              model.addLink(link1);
+          }
+          if(stepIds.indexOf(nextStepId) === -1){
+              stepIds.push(nextStepId);
+              nextNodesArr.push(nextNode);
+          }
+          console.log(`nextStepId: ${nextStepId}, action: ${JSON.stringify(action)} NODE exist`);
+        }else{
+          console.log(`nextStepId: ${nextStepId}, action: ${JSON.stringify(action)} NODE not exist`);
+        }
+    });
+  });
+  console.log("nextNodesArr.length: ", nextNodesArr);
+  if(nextNodesArr.length > 0){
+    breadthFirstLinksBuild(stepIdToNode, nextNodesArr, model)
+  }
 };
 
 
@@ -170,11 +179,11 @@ export default () => {
 
 	console.log("allStepsJson data", allStepsData)
 
-	const nodes = [];
+	const nodes: DefaultNodeModel[] = [];
 	const stepIdToNode = {}
 	allStepsData.forEach((step, index) => {
 		console.log("index", index, step.actions);
-		var node = new DefaultNodeModel("Node 1", "rgb(0,192,255)", ['yes', 'no'], step);
+		var node = new DefaultNodeModel(step.name, "rgb(0,192,255)", ['yes', 'no'], step);
 		//if is entry ignore the in port
 		if(!step.isEntry){
 			//add input
@@ -185,10 +194,9 @@ export default () => {
 		const { actions } = step;
 		if(_.isArray(actions)){
 			  actions.forEach((action, index) => {
-						node.addOutPort(action.text);
+						//node.addOutPort(action.text);
+            node.addOutPortAction(action);
 				});
-		}else if(actions){
-				node.addOutPort(step.type);
 		}
 		// let portYes = node1.addOutPort("yes");
 		// let portNo = node1.addOutPort("no");
@@ -203,7 +211,7 @@ export default () => {
 	const rootNode = _.find(nodes, node => {
 		return node.getStep().isEntry;
 	});
-	//breadthFirstLinksBuild(stepIdToNode, rootNode)
+	breadthFirstLinksBuild(stepIdToNode, [rootNode], model);
 
 
 	// const step1: Step = {

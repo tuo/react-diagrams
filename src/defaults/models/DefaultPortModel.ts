@@ -3,28 +3,34 @@ import { PortModel } from "../../models/PortModel";
 import { DiagramEngine } from "../../DiagramEngine";
 import { DefaultLinkModel } from "./DefaultLinkModel";
 import { LinkModel } from "../../models/LinkModel";
+import { StepAction } from "../../Step";
 
 export class DefaultPortModel extends PortModel {
 	in: boolean;
 	label: string;
 	links: { [id: string]: DefaultLinkModel };
+	action: StepAction;
 
-	constructor(isInput: boolean, name: string, label: string = null, id?: string) {
+	constructor(isInput: boolean, name: string, label: string = null, action: StepAction = null, id?: string) {
 		super(name, "default", id);
 		this.in = isInput;
 		this.label = label || name;
+		this.action = action;
 	}
+
 
 	deSerialize(object, engine: DiagramEngine) {
 		super.deSerialize(object, engine);
 		this.in = object.in;
 		this.label = object.label;
+		this.action = object.action;
 	}
 
 	serialize() {
 		return _.merge(super.serialize(), {
 			in: this.in,
-			label: this.label
+			label: this.label,
+			action: this.action,
 		});
 	}
 

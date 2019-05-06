@@ -217,7 +217,7 @@ export class DiagramWidget extends BaseWidget<DiagramProps, DiagramState> {
 		var diagramEngine = this.props.diagramEngine;
 		var diagramModel = diagramEngine.getDiagramModel();
 
-		console.log(diagramEngine.getDiagramModel(), 'onMouseMove');
+		//console.log(diagramEngine.getDiagramModel(), 'onMouseMove');
 
 		//select items so draw a bounding box
 		if (this.state.action instanceof SelectingAction) {
@@ -381,7 +381,7 @@ export class DiagramWidget extends BaseWidget<DiagramProps, DiagramState> {
 			});
 
 			//check for / remove any loose links in any models which have been moved
-			//remove that 
+			//remove that
 			if (this.state.wasMoved) {
 				_.forEach(this.state.action.selectionModels, model => {
 					//only care about points connecting to things

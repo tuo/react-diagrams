@@ -3,7 +3,7 @@ import * as _ from "lodash";
 
 import { NodeModel } from "../../models/NodeModel";
 import { Toolkit } from "../../Toolkit";
-import { Step } from "../../Step";
+import { Step, StepAction } from "../../Step";
 import { DiagramEngine } from "../../DiagramEngine";
 
 /**
@@ -26,11 +26,15 @@ export class DefaultNodeModel extends NodeModel {
 	}
 
 	addInPort(label: string): DefaultPortModel {
-		return this.addPort(new DefaultPortModel(true, Toolkit.UID(), label));
+		return this.addPort(new DefaultPortModel(true, Toolkit.UID(), label, null));
 	}
 
 	addOutPort(label: string): DefaultPortModel {
-		return this.addPort(new DefaultPortModel(false, Toolkit.UID(), label));
+		return this.addPort(new DefaultPortModel(false, Toolkit.UID(), label, null));
+	}
+
+	addOutPortAction(action: StepAction): DefaultPortModel {
+		return this.addPort(new DefaultPortModel(false, Toolkit.UID(), action.text, action));
 	}
 
 	deSerialize(object, engine: DiagramEngine) {
@@ -69,6 +73,12 @@ export class DefaultNodeModel extends NodeModel {
 	getOutPorts(): DefaultPortModel[] {
 		return _.filter(this.ports, portModel => {
 			return !portModel.in;
+		});
+	}
+
+	getOutPortByStepId(stepId: number): DefaultPortModel {
+		return _.find(this.ports, portModel => {
+			return portModel.action && portModel.action.nextStepId === stepId;
 		});
 	}
 }
