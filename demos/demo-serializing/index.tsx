@@ -5,6 +5,7 @@ import { DemoWorkspaceWidget } from "../.helpers/DemoWorkspaceWidget";
 import { action } from "@storybook/addon-actions";
 import * as beautify from "json-beautify";
 import * as _ from "lodash";
+import { distributeElements } from "./dagre-utils";
 
 const allStepsJson = {
   "list" : {
@@ -168,6 +169,16 @@ let breadthFirstLinksBuild = (stepIdToNode, nodesArr, model) => {
   }
 };
 
+function getDistributedModel(engine, model) {
+	const serialized = model.serializeDiagram();
+	const distributedSerializedDiagram = distributeElements(serialized);
+
+	//deserialize the model
+	let deSerializedModel = new DiagramModel();
+	deSerializedModel.deSerializeDiagram(distributedSerializedDiagram, engine);
+	return deSerializedModel;
+}
+
 
 export default () => {
 	//1) setup the diagram engine
@@ -202,7 +213,10 @@ export default () => {
 		// let portNo = node1.addOutPort("no");
 		// let portNotSUre = node1.addOutPort("not sure");
 		// node1.setPosition(100, 100);
-		node.setPosition(Math.random() * 500, Math.random() * 500);
+		//node.setPosition(Math.random() * 500, Math.random() * 500);
+    //node.x = index * 170;
+		//node.y = //index * 170;
+
 		nodes.push(node);
 		stepIdToNode[step.id] = node;
 		model.addNode(node);
@@ -225,24 +239,7 @@ export default () => {
 	// 	]
 	// }
 
-	var node1 = new DefaultNodeModel("Node 1", "rgb(0,192,255)", ['yes', 'no']);
-	let portYes = node1.addOutPort("yes");
-	let portNo = node1.addOutPort("no");
-	let portNotSUre = node1.addOutPort("not sure");
-	node1.setPosition(100, 100);
-	//port.maximumLinks = 1;
 
-	//3-B) create another default node
-	var node2 = new DefaultNodeModel("Node 2", "rgb(192,255,0)");
-	let port2 = node2.addInPort("In");
-	node2.setPosition(400, 100);
-
-	// link the ports
-	let link1 = portYes.link(port2);
-
-	var node3 = new DefaultNodeModel("Node 3", "rgb(192,215,0)", []);
-	let port3 = node3.addInPort("In");
-	node3.setPosition(400, 200);
 
 
 	//4) add the models to the root graph
@@ -250,24 +247,29 @@ export default () => {
 
 
 	//5) load model into engine
-	engine.setDiagramModel(model);
+	//engine.setDiagramModel(model);
+
+  //5) load model into engine
+	let model3 = getDistributedModel(engine, model);
+	engine.setDiagramModel(model3);
+
 
 	//!------------- SERIALIZING ------------------
 
-	var str = JSON.stringify(model.serializeDiagram());
+	//var str = JSON.stringify(model.serializeDiagram());
 
 	//!------------- DESERIALIZING ----------------
 
-	var model2 = new DiagramModel();
-	model2.deSerializeDiagram(JSON.parse(str), engine);
-	engine.setDiagramModel(model2);
+	//var model2 = new DiagramModel();
+	//model2.deSerializeDiagram(JSON.parse(str), engine);
+	//engine.setDiagramModel(model2);
 
 	return (
 		<DemoWorkspaceWidget
 			buttons={
 				<button
 					onClick={() => {
-						action("Serialized Graph")(beautify(model2.serializeDiagram(), null, 2, 80));
+						action("Serialized Graph")(beautify(model3.serializeDiagram(), null, 2, 80));
 					}}
 				>
 					Serialize Graph

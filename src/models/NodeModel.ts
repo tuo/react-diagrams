@@ -127,6 +127,7 @@ export class NodeModel extends BaseModel<DiagramModel, BaseModelListener> {
 	}
 
 	updateDimensions({ width, height }: { width: number; height: number }) {
+		console.log(`updateDimensions width: ${width}, height: ${height}`)
 		this.width = width;
 		this.height = height;
 	}
