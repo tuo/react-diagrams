@@ -1,13 +1,15 @@
 // tslint:disable
+export interface StepAction {
+  nextStepId?: number;
+  text?: string;
+}
+
+
 export interface Step {
-  id: number
+  id: number;
   name: string;
   isEntry: boolean;
   texts?: (string)[] | null;
   type: string;
-  actions: any;
+  actions: StepAction[];
 }
-// export interface StepAction {
-//   text: string;
-//   nextStepId: number;
-// }

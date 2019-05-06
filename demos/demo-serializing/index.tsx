@@ -95,7 +95,7 @@ const allStepsJson = {
         "createdAt" : "2019-04-05T10:50:25.231Z",
         "name" : "usage",
         "actions" : [
-            {
+          {
             "nextStepId" : 2,
             "text" : "搬砖"
           },
@@ -114,7 +114,9 @@ const allStepsJson = {
         "type" : "None",
         "createdAt" : "2019-04-05T10:39:48.154Z",
         "name" : "thanks",
-        "actions" : [{"nextStepId" : 2}]
+        "actions" : [
+          {nextStepId : 2, text: ""},
+        ]
       }
     ]
   }
@@ -203,30 +205,6 @@ export default () => {
 	});
 	//breadthFirstLinksBuild(stepIdToNode, rootNode)
 
-	const step1: Step = {
-		id: 1,
-		name: "Hello",
-		isEntry: true,
-		type: 'Options',
-		texts: ['Welcome bro', 'Ni hao'],
-		actions: [
-			{ text: "yes", nextStepId: 2},
-			{ text: "no", nextStepId: -1},
-		]
-	}
-
-
-		const step2: Step = {
-			id: 2,
-			name: "Test",
-			isEntry: false,
-			type: 'Options',
-			texts: ['欢迎来到'],
-			actions: [
-				{ text: "yes", nextStepId: 2},
-				{ text: "no", nextStepId: -1},
-			]
-		}
 
 	// const step1: Step = {
 	// 	id: 2,
