@@ -2,8 +2,8 @@ import * as dagre from "dagre";
 import * as _ from "lodash";
 
 const size = {
-	width: 60,
-	height: 60
+	width: 120,
+	height: 160
 };
 
 export function distributeElements(model) {

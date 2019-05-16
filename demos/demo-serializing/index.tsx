@@ -179,6 +179,31 @@ function getDistributedModel(engine, model) {
 	return deSerializedModel;
 }
 
+class Demo8Widget extends React.Component<any, any> {
+	constructor(props) {
+		super(props);
+		this.state = {};
+		this.autoDistribute = this.autoDistribute.bind(this);
+	}
+
+	autoDistribute() {
+		const { engine } = this.props;
+		const model = engine.getDiagramModel();
+		let distributedModel = getDistributedModel(engine, model);
+		engine.setDiagramModel(distributedModel);
+		this.forceUpdate();
+	}
+
+	render() {
+		const { engine } = this.props;
+
+		return (
+			<DemoWorkspaceWidget buttons={<button onClick={this.autoDistribute}>Re-distribute</button>}>
+				<DiagramWidget className="srd-demo-canvas" diagramEngine={engine} />
+			</DemoWorkspaceWidget>
+		);
+	}
+}
 
 export default () => {
 	//1) setup the diagram engine
@@ -263,20 +288,20 @@ export default () => {
 	//var model2 = new DiagramModel();
 	//model2.deSerializeDiagram(JSON.parse(str), engine);
 	//engine.setDiagramModel(model2);
-
-	return (
-		<DemoWorkspaceWidget
-			buttons={
-				<button
-					onClick={() => {
-						action("Serialized Graph")(beautify(model3.serializeDiagram(), null, 2, 80));
-					}}
-				>
-					Serialize Graph
-				</button>
-			}
-		>
-			<DiagramWidget className="srd-demo-canvas" diagramEngine={engine} />
-		</DemoWorkspaceWidget>
-	);
+	return <Demo8Widget engine={engine} />;
+	// return (
+	// 	<DemoWorkspaceWidget
+	// 		buttons={
+	// 			<button
+	// 				onClick={() => {
+	// 					action("Serialized Graph")(beautify(model3.serializeDiagram(), null, 2, 80));
+	// 				}}
+	// 			>
+	// 				Serialize Graph
+	// 			</button>
+	// 		}
+	// 	>
+	// 		<DiagramWidget className="srd-demo-canvas" diagramEngine={engine} />
+	// 	</DemoWorkspaceWidget>
+	// );
 };
